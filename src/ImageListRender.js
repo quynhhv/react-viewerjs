@@ -3,9 +3,14 @@ import ReactDom from 'react-dom'
 import Viewer from 'viewerjs'
 require('viewerjs/dist/viewer.min.css')
 class ImageListRender extends PureComponent {
+  constructor(props) {
+    super(props);
+    // create a ref to store the textInput DOM element
+    this.imageListWrapper = React.createRef();
+  }
     render() {
       const {imageUrls} = this.props;
-      return (<div style={{display:'none'}} ref="imageListWrapper">
+      return (<div style={{display:'none'}} ref={this.imageListWrapper}>
         {
           imageUrls.map((url, index) => {
             return <img src={url} key={index} style={{display: 'none'}}/>
@@ -40,7 +45,7 @@ class ImageListRender extends PureComponent {
         }
       };
       /*因为Viewer接受的参数必须是一个图片容器或者是一个图片元素，其他元素初始化会被中断*/
-      this.viewer = new Viewer(ReactDom.findDOMNode(this.refs.imageListWrapper), options);
+      this.viewer = new Viewer(ReactDom.findDOMNode(this.textInput.current), options);
       this.viewer.view(index);
     }
     componentWillUnmount() {
